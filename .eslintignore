@@ -1,0 +1,2 @@
+src/grpc/proto/*
+src/auth/auth.middleware.ts

@@ -1,0 +1,18 @@
+{
+	"myStandartFunction": {
+		"prefix": "myStandartFunction",
+		"body": [
+			"async standarDFunction(param: type) {",
+			"\ttry {",
+			"",
+			"\t\treturn { data: 'data' , error: null };",
+			"\t} catch (err) {",
+			"\t\terrorLogger(err);",
+			"\t\treturn { data: null, error: err };",
+			"\t}",
+			"",
+			"}"
+		],
+		"description": "creates standart async function/method  with try/catch/error loging"
+	}
+}
