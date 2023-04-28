@@ -4,11 +4,9 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-//import { load } from './config/configuration';
 import * as bodyParser from 'body-parser';
+//import expressListRoutes from 'express-list-routes';
 
-//import { PatientEntity } from './patient/entities/patient.entity'
-//import { GRPCproxyNotificationService } from './grpc/proxy_services/grpc.notifications.proxy.service';
 
 async function bootstrap() {
 	//await load();
@@ -22,18 +20,18 @@ async function bootstrap() {
 
 	app.setGlobalPrefix('protected', {
 		exclude: [{ path: '/public/auth/admin', method: RequestMethod.POST },
-				  { path: '/public/questionnaire/:uuid', method: RequestMethod.GET },
-				  { path: '/public/questionnaire', method: RequestMethod.PATCH },
-				  { path: '/public/otp', method: RequestMethod.PATCH },
-				  { path: '/public/otp', method: RequestMethod.POST },
-				  { path: '/public/otp/lookup', method: RequestMethod.POST },
-				]
+		{ path: '/public/questionnaire/:uuid', method: RequestMethod.GET },
+		{ path: '/public/questionnaire', method: RequestMethod.PATCH },
+		{ path: '/public/otp', method: RequestMethod.PATCH },
+		{ path: '/public/otp', method: RequestMethod.POST },
+		{ path: '/public/otp/lookup', method: RequestMethod.POST },
+		]
 	});
 
 	app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
-	app.use(bodyParser.json({limit: '50mb'}));
-	app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+	app.use(bodyParser.json({ limit: '50mb' }));
+	app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 	app.useStaticAssets('./public');
 	app.setBaseViewsDir('./views');
@@ -62,6 +60,11 @@ async function bootstrap() {
 	await app.listen(port);
 	console.log(port);
 
+/* 
+	const server = app.getHttpServer();
+	const router = server._events.request._router;
+	console.log(expressListRoutes(server));
+ */
 }
 
 bootstrap();

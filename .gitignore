@@ -1,6 +1,6 @@
 # compiled output
 .env
-
+package-lock.json
 /src/utils/encryption.utils.secret.ts
 /dist
 /node_modules

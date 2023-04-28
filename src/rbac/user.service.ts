@@ -12,7 +12,7 @@ type searchKeys = keyof typeof User.prototype;
 
 @Injectable()
 export class UsersService implements IService {
-    constructor(@InjectModel(User.name, "nestrbam") private readonly model: Model<UserDocument>) { }
+    constructor(@InjectModel(User.name, "nestrbac") private readonly model: Model<UserDocument>) { }
 
     async create(createDto: CreateUserDto): TupleErrorOrData<UserDocument> {
         try {
