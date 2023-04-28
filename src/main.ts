@@ -5,6 +5,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as bodyParser from 'body-parser';
+import {getRouteList} from './rbac/rbac.utils';
+import { arrayLogger } from './utils/logger.utils';
 //import expressListRoutes from 'express-list-routes';
 
 
@@ -20,11 +22,6 @@ async function bootstrap() {
 
 	app.setGlobalPrefix('protected', {
 		exclude: [{ path: '/public/auth/admin', method: RequestMethod.POST },
-		{ path: '/public/questionnaire/:uuid', method: RequestMethod.GET },
-		{ path: '/public/questionnaire', method: RequestMethod.PATCH },
-		{ path: '/public/otp', method: RequestMethod.PATCH },
-		{ path: '/public/otp', method: RequestMethod.POST },
-		{ path: '/public/otp/lookup', method: RequestMethod.POST },
 		]
 	});
 
@@ -56,15 +53,12 @@ async function bootstrap() {
 		SwaggerModule.setup('docs', app, document);
 	}
 
-
 	await app.listen(port);
 	console.log(port);
 
-/* 
-	const server = app.getHttpServer();
-	const router = server._events.request._router;
-	console.log(expressListRoutes(server));
- */
+	const routesList = getRouteList(app)
+	arrayLogger(routesList, 'routesList')
+
 }
 
 bootstrap();
