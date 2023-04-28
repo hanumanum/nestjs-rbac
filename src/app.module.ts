@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
 import { ResponseHandlerService } from './utils/response.handler.utils';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './rbam/rbam.module';
+import { UsersModule } from './rbac/rbac.module';
 
 @Module({
 	imports: [
@@ -12,7 +12,7 @@ import { UsersModule } from './rbam/rbam.module';
 			envFilePath: '.env'
 		}),
 		MongooseModule.forRootAsync({
-			connectionName: 'nestrbam',
+			connectionName: 'nestrbac',
 			imports: [ConfigModule],
 			inject: [ConfigService],
 			useFactory: async (config: ConfigService) => ({

@@ -43,7 +43,7 @@ async function bootstrap() {
 		app.enableCors();
 
 		const config = new DocumentBuilder()
-			.setTitle('Nest RBAM')
+			.setTitle('Nest RBAC with MongoDB API docs')
 			.setDescription('API docs')
 			.setVersion('1.0')
 			.addServer(`http://localhost:${port}/protected`, 'Localhost Protected Calls')

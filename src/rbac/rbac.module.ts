@@ -10,7 +10,7 @@ import { ResponseHandlerService } from "../utils/response.handler.utils";
         MongooseModule.forFeature([{
             name: User.name,
             schema: UserSchema
-        }], 'nestrbam')
+        }], 'nestrbac')
     ],
 
     providers: [UsersService, ResponseHandlerService],
