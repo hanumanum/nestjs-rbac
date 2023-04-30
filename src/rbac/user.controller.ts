@@ -5,6 +5,7 @@ import { UsersService } from './user.service';
 import { PageOptionsDto } from '../common/dtos';
 import { ResponseHandlerService } from '../utils/response.handler.utils';
 import { ApiTags } from '@nestjs/swagger';
+import {ValidateMongoIdPipe} from '../utils/mongo.utils';
 
 @Controller('user')
 @ApiTags('User Management')
@@ -25,8 +26,7 @@ export class UserController {
 
     @Get(':id')
     @Version("1")
-    //TODO: validate objectID
-    async one(@Res() res, @Param('id') id: string) {
+    async one(@Res() res, @Param('id', ValidateMongoIdPipe) id: string) {
         const [error, user] = await this.service.one(id);
         if (error)
             return this.messageHandler.errorHandler(res, error, `cannot get ${this.entityTitle} details`);
@@ -46,8 +46,7 @@ export class UserController {
 
     @Delete()
     @Version("1")
-    //TODO: validate objectID
-    async delete(@Res() res, @Query('id') id: string) {
+    async delete(@Res() res, @Query('id', ValidateMongoIdPipe) id: string) {
         const [error] = await this.service.remove(id);
 
         if (error)
@@ -58,8 +57,7 @@ export class UserController {
 
     @Patch()
     @Version("1")
-    //TODO: validate objectID
-    async update(@Res() res, @Query('id') id: string, @Body() updateDto: UpdateUserDto) {
+    async update(@Res() res, @Query('id', ValidateMongoIdPipe) id: string, @Body() updateDto: UpdateUserDto) {
         const [error] = await this.service.update(id, updateDto);
 
         if (error)

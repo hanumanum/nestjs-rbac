@@ -1,12 +1,13 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument, UserSchema } from './entities/user.scheme';
+import { User, UserDocument } from './entities/user.scheme';
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { IService, TupleErrorOrData } from '../common/interfaces/service.interface';
-import { PageDto, PageMetaDto, PageOptionsDto, TypeErrorOrPageDtoTuple } from '../common/dtos';
+import { PageOptionsDto, TypeErrorOrPageDtoTuple } from '../common/dtos';
 import { errorLogger } from '../utils/logger.utils';
+import { listMongoCollection } from '../utils/mongo.utils';
 
 type searchKeys = keyof typeof User.prototype;
 
@@ -28,25 +29,14 @@ export class UsersService implements IService {
 
     async list(pageOptionsDto: PageOptionsDto, findFields: searchKeys[] = []): TypeErrorOrPageDtoTuple<UserDocument> {
         try {
-            const whereConditionOr = {
-                $or: findFields.map((field) => {
-                    return { [field]: { $regex: pageOptionsDto.filter, $options: 'i' } }
-                })
-            }
 
-            const itemCount = await this.model.count(whereConditionOr).exec();
-            const usersList = await this.model
-                .find()
-                .where(whereConditionOr)
-                .skip(pageOptionsDto.skip)
-                .limit(pageOptionsDto.take)
-                .sort({ createdAt: pageOptionsDto.order })
-                .exec();
+            const [error, data] = await listMongoCollection(this.model, pageOptionsDto, findFields);
 
-            const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
-            const pageDto = new PageDto(usersList, pageMetaDto);
+            if (error)
+                return [error, null]
 
-            return [null, pageDto]
+            return data
+
         }
         catch (err) {
             errorLogger(err)
