@@ -1,6 +1,6 @@
 ### TODO: 
 - [ ] Users Password Encription/Decription
-- [x] Routes and Mehtods List
+- [x] Routes and Methods List
 - [ ] Roles
 - [ ] Autorisation and authentication (Passport)
 - [x] File Upload and Files management system
