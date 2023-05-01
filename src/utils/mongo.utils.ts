@@ -18,8 +18,10 @@ export class ValidateMongoIdPipe implements PipeTransform<string> {
     };
 }
 
-export const listMongoCollection = async (model, pageOptionsDto, findFields = []) => {
+export const listMongoCollectionWithPagination = async (model, pageOptionsDto, findFields = []) => {
     try {
+
+
         const whereConditionOr = {
             $or: findFields.map((field) => {
                 return { [field]: { $regex: pageOptionsDto.filter, $options: 'i' } }
@@ -27,7 +29,7 @@ export const listMongoCollection = async (model, pageOptionsDto, findFields = []
         }
 
         const itemCount = await model.count(whereConditionOr).exec();
-        const usersList = await model
+        const dongoDocumentsList = await model
             .find()
             .where(whereConditionOr)
             .skip(pageOptionsDto.skip)
@@ -36,7 +38,7 @@ export const listMongoCollection = async (model, pageOptionsDto, findFields = []
             .exec();
 
         const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
-        const pageDto = new PageDto(usersList, pageMetaDto);
+        const pageDto = new PageDto(dongoDocumentsList, pageMetaDto);
 
         return [null, pageDto];
 

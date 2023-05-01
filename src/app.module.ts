@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ResponseHandlerService } from './utils/response.handler.utils';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './rbac/rbac.module';
+import { FilesModule } from './files/files.module'; 
 
 @Module({
 	imports: [
@@ -19,7 +20,8 @@ import { UsersModule } from './rbac/rbac.module';
 				uri: config.get<string>('MONGO_CONNECTION_STRING'),
 			}),
 		}),
-		UsersModule
+		UsersModule,
+		FilesModule
 	],
 	providers: [
 		AppService,

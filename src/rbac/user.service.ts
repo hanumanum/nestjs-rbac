@@ -7,7 +7,7 @@ import { UpdateUserDto } from './dto/update.user.dto';
 import { IService, TupleErrorOrData } from '../common/interfaces/service.interface';
 import { PageOptionsDto, TypeErrorOrPageDtoTuple } from '../common/dtos';
 import { errorLogger } from '../utils/logger.utils';
-import { listMongoCollection } from '../utils/mongo.utils';
+import { listMongoCollectionWithPagination } from '../utils/mongo.utils';
 
 type searchKeys = keyof typeof User.prototype;
 
@@ -30,12 +30,13 @@ export class UsersService implements IService {
     async list(pageOptionsDto: PageOptionsDto, findFields: searchKeys[] = []): TypeErrorOrPageDtoTuple<UserDocument> {
         try {
 
-            const [error, data] = await listMongoCollection(this.model, pageOptionsDto, findFields);
+            const [error, data] = await listMongoCollectionWithPagination(this.model, pageOptionsDto, findFields);
 
             if (error)
                 return [error, null]
 
-            return data
+
+            return [null , data]
 
         }
         catch (err) {

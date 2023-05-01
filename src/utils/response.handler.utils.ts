@@ -31,7 +31,7 @@ export class ResponseHandlerService {
 	createdHandler = (res, entityTitle: string) => {
 		return res.status(HttpStatus.CREATED).send({
 			code: HttpStatus.CREATED,
-			message: `${entityTitle} ${this.messeges.itemCreated}`
+			message: `${entityTitle} created`
 		}
 		);
 	};
@@ -39,7 +39,7 @@ export class ResponseHandlerService {
 	updatedHandler = (res, entityTitle: string) => {
 		return res.status(HttpStatus.OK).send({
 			code: HttpStatus.OK,
-			message: `${entityTitle}`
+			message: `${entityTitle} updated`
 		});
 	};
 
