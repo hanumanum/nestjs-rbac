@@ -2,12 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 //TODO: use PartialType here
-export class UpdateUserDto {
-    @ApiProperty()
+export class CheckUserDto {
+    @ApiProperty({required:true})
     @IsNotEmpty()
-    password?:string;
+    username:string;
 
-    @ApiProperty()
+    @ApiProperty({required:true})
     @IsNotEmpty()
-    name:string;
+    password:string;
 }

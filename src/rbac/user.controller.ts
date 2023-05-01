@@ -2,16 +2,19 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Res, Version 
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { UsersService } from './user.service';
+import { CheckUserDto } from './dto/check.user.dto';
 import { PageOptionsDto } from '../common/dtos';
 import { ResponseHandlerService } from '../utils/response.handler.utils';
 import { ApiTags } from '@nestjs/swagger';
-import {ValidateMongoIdPipe} from '../utils/mongo.utils';
+import { ValidateMongoIdPipe } from '../utils/mongo.utils';
+import { hashMake } from '../utils/encryption.utils';
+
 
 @Controller('user')
 @ApiTags('User Management')
 export class UserController {
     private readonly entityTitle = 'user';
-    constructor(private readonly service: UsersService, private readonly messageHandler: ResponseHandlerService) { }
+    constructor(private readonly service: UsersService, private readonly mh: ResponseHandlerService) { }
 
     @Get()
     @Version("1")
@@ -19,9 +22,9 @@ export class UserController {
         const [error, pageDto] = await this.service.list(pageOptionsDto, ['name', 'username']);
 
         if (error)
-            return this.messageHandler.errorHandler(res, error, `cannot get ${this.entityTitle}s list`);
+            return this.mh.errorHandler(res, error, `cannot get ${this.entityTitle}s list`);
 
-        return this.messageHandler.dataPaginatedHandler(res, pageDto)
+        return this.mh.dataPaginatedHandler(res, pageDto)
     }
 
     @Get(':id')
@@ -29,19 +32,21 @@ export class UserController {
     async one(@Res() res, @Param('id', ValidateMongoIdPipe) id: string) {
         const [error, user] = await this.service.one(id);
         if (error)
-            return this.messageHandler.errorHandler(res, error, `cannot get ${this.entityTitle} details`);
+            return this.mh.errorHandler(res, error, `cannot get ${this.entityTitle} details`);
 
-        return this.messageHandler.dataHandler(res, user);
+        return this.mh.dataHandler(res, user);
     }
 
     @Post()
     @Version("1")
     async create(@Res() res, @Body() createDto: CreateUserDto) {
+        createDto.password = await hashMake(createDto.password);
+
         const [error] = await this.service.create(createDto);
         if (error)
-            return this.messageHandler.errorHandler(res, error, `cannot create ${this.entityTitle}`);
+            return this.mh.errorHandler(res, error, `cannot create ${this.entityTitle}`);
 
-        return this.messageHandler.createdHandler(res, `${this.entityTitle} created successfully`);
+        return this.mh.createdHandler(res, `${this.entityTitle} created successfully`);
     }
 
     @Delete()
@@ -50,9 +55,9 @@ export class UserController {
         const [error] = await this.service.remove(id);
 
         if (error)
-            return this.messageHandler.errorHandler(res, error, `cannot delete ${this.entityTitle}`);
+            return this.mh.errorHandler(res, error, `cannot delete ${this.entityTitle}`);
 
-        return this.messageHandler.deletedHandler(res, `${this.entityTitle} deleted successfully`);
+        return this.mh.deletedHandler(res, `${this.entityTitle} deleted successfully`);
     }
 
     @Patch()
@@ -61,9 +66,19 @@ export class UserController {
         const [error] = await this.service.update(id, updateDto);
 
         if (error)
-            return this.messageHandler.errorHandler(res, error, `cannot update ${this.entityTitle}`);
+            return this.mh.errorHandler(res, error, `cannot update ${this.entityTitle}`);
 
-        return this.messageHandler.updatedHandler(res, `${this.entityTitle} updated successfully`);
+        return this.mh.updatedHandler(res, `${this.entityTitle} updated successfully`);
+    }
+
+    @Post('checkuser')
+    @Version("1")
+    async checkUser(@Res() res, @Body() checkUserDto:CheckUserDto) {
+        const [error, user] = await this.service.checkPassowrd(checkUserDto);
+        if (error)
+            return this.mh.errorHandler(res, error, `cannot get ${this.entityTitle} details`);
+
+        return this.mh.dataHandler(res, user);
     }
 
 }

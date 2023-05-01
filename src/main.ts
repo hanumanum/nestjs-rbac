@@ -15,8 +15,7 @@ async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 	const configService = app.get(ConfigService);
 	const port = configService.get('PORT');
-	//global.encKey = await configService.get('encKey');
-	//global.filespath = await configService.get('filespath');
+	global.encKey = configService.get('encKey_iv_hex');
 
 	app.enableVersioning();
 
