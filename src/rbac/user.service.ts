@@ -31,9 +31,7 @@ export class UsersService implements IService {
 
     async list(pageOptionsDto: PageOptionsDto, findFields: searchKeys[] = []): TypeErrorOrPageDtoTuple<UserDocument> {
         try {
-
             const [error, data] = await listMongoCollectionWithPagination(this.model, pageOptionsDto, findFields);
-
             if (error)
                 return [error, null]
 

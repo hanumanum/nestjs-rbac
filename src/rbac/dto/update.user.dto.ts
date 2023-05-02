@@ -1,13 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { OmitType, PartialType } from '@nestjs/swagger';
+import { CreateUserDto } from './create.user.dto';
 
-//TODO: use PartialType here
-export class UpdateUserDto {
-    @ApiProperty()
-    @IsNotEmpty()
-    password?:string;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    name:string;
-}
+export class UpdateUserDto  extends OmitType(PartialType(CreateUserDto), ["username"] as const) {}

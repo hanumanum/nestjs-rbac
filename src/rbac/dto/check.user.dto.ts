@@ -1,13 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
+import { CreateUserDto } from './create.user.dto';
 
-//TODO: use PartialType here
-export class CheckUserDto {
-    @ApiProperty({required:true})
-    @IsNotEmpty()
-    username:string;
-
-    @ApiProperty({required:true})
-    @IsNotEmpty()
-    password:string;
-}
+export class CheckUserDto extends PickType(CreateUserDto, ["username", "password"] as const) {}
