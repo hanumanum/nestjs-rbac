@@ -18,11 +18,18 @@ export class ValidateMongoIdPipe implements PipeTransform<string> {
     };
 }
 
+export const documentToPureJSON = (document) => {
+    if(Array.isArray(document)){
+        return document.map((doc) => doc._doc)
+    }
+    
+    return document._doc
+}
+
 export const listMongoCollectionWithPagination = async (model, pageOptionsDto, findFields = []) => {
     try {
 
-
-        const whereConditionOr = {
+       const whereConditionOr = {
             $or: findFields.map((field) => {
                 return { [field]: { $regex: pageOptionsDto.filter, $options: 'i' } }
             })
