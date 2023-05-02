@@ -2,6 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 //TODO: review all this shit
+//TODO: change all code fields to statusCode
 @Injectable()
 export class ResponseHandlerService {
 	private messeges: any = {}
@@ -60,7 +61,7 @@ export class ResponseHandlerService {
 	notFoundHandler = (res, entityTitle: string) => {
 		return res.status(HttpStatus.NOT_FOUND).send({
 			code: HttpStatus.NOT_FOUND,
-			message: `${entityTitle} ${this.messeges.notFound}`
+			message: `${entityTitle} not found`
 		});
 	};
 

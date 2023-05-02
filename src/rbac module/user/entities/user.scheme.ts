@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+//import { Exclude } from 'class-transformer';
 import { Document } from 'mongoose';
 
 @Schema({ timestamps: true })
@@ -7,6 +8,7 @@ export class User {
     username: string;
 
     @Prop({ required: true })
+    //TODO: @Exclude()
     password: string;
 
     @Prop()

@@ -5,7 +5,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as bodyParser from 'body-parser';
-import {getRouteList} from './rbac/rbac.utils';
+import {getRouteList} from './rbac module/rbac.utils';
 import { arrayLogger } from './utils/logger.utils';
 //import expressListRoutes from 'express-list-routes';
 
@@ -58,6 +58,7 @@ async function bootstrap() {
 	const routesList = getRouteList(app)
 	arrayLogger(routesList, 'routesList')
 
+	global.routesList = routesList;
 }
 
 bootstrap();

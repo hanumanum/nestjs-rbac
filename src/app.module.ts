@@ -3,8 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
 import { ResponseHandlerService } from './utils/response.handler.utils';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './rbac/rbac.module';
-import { FilesModule } from './files/files.module'; 
+import { UsersModule } from './rbac module/rbac.module';
+import { FilesModule } from './files module/files.module'; 
 
 @Module({
 	imports: [

@@ -1,14 +1,14 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Res, Version } from '@nestjs/common';
-import { CreateUserDto } from './dto/create.user.dto';
-import { UpdateUserDto } from './dto/update.user.dto';
-import { UsersService } from './user.service';
+import { CreateUserDto as CreateDto } from './dto/create.user.dto';
+import { UpdateUserDto as UpdateDto } from './dto/update.user.dto';
+import { UsersService as PrimaryService } from './user.service';
 import { CheckUserDto } from './dto/check.user.dto';
-import { PageOptionsDto } from '../common/dtos';
-import { ResponseHandlerService } from '../utils/response.handler.utils';
+import { PageOptionsDto } from '../../common/dtos';
+import { ResponseHandlerService } from '../../utils/response.handler.utils';
 import { ApiTags } from '@nestjs/swagger';
-import { ValidateMongoIdPipe, documentToPureJSON } from '../utils/mongo.utils';
-import { hashMake } from '../utils/encryption.utils';
-import { EnumFieldsFilterMode, ObjectTransformerLib } from '../utils/object.transformers.lib';
+import { ValidateMongoIdPipe, documentToPureJSON } from '../../utils/mongo.utils';
+import { hashMake } from '../../utils/encryption.utils';
+import { EnumFieldsFilterMode, ObjectTransformerLib } from '../../utils/object.transformers.lib';
 import { ConfigService } from '@nestjs/config';
 
 
@@ -18,7 +18,7 @@ export class UserController {
     private readonly entityTitle = 'user';
     constructor(
         private readonly configService: ConfigService,
-        private readonly service: UsersService,
+        private readonly service: PrimaryService,
         private readonly rhService: ResponseHandlerService
     ) { }
 
@@ -27,12 +27,12 @@ export class UserController {
     async list(@Res() res, @Query() pageOptionsDto: PageOptionsDto) {
         const [error, pageDto] = await this.service.list(pageOptionsDto, ['name', 'username']);
 
-        pageDto.data = documentToPureJSON(pageDto.data)
-        const data = new ObjectTransformerLib(pageDto.data)
-        pageDto.data = data.filterFields(EnumFieldsFilterMode.remove, ['password']).getData()
-
         if (error)
             return this.rhService.errorHandler(res, error, `cannot get ${this.entityTitle}s list`);
+
+        pageDto.data = documentToPureJSON(pageDto.data)
+        const transformer = new ObjectTransformerLib(pageDto.data)
+        pageDto.data = transformer.filterFields(EnumFieldsFilterMode.remove, ['password']).getData()
 
         return this.rhService.dataPaginatedHandler(res, pageDto)
     }
@@ -42,18 +42,18 @@ export class UserController {
     async one(@Res() res, @Param('id', ValidateMongoIdPipe) id: string) {
         const [error, user] = await this.service.one(id);
 
-        const _user = documentToPureJSON(user)
-        delete _user.password
-
         if (error)
             return this.rhService.errorHandler(res, error, `cannot get ${this.entityTitle} details`);
+
+        const _user = documentToPureJSON(user)
+        delete _user.password
 
         return this.rhService.dataHandler(res, user);
     }
 
     @Put()
     @Version("1")
-    async create(@Res() res, @Body() createDto: CreateUserDto) {
+    async create(@Res() res, @Body() createDto: CreateDto) {
         createDto.password = await hashMake(createDto.password);
 
         const [error] = await this.service.create(createDto);
@@ -76,7 +76,7 @@ export class UserController {
 
     @Patch(':id')
     @Version("1")
-    async update(@Res() res, @Param('id', ValidateMongoIdPipe) id: string, @Body() updateDto: UpdateUserDto) {
+    async update(@Res() res, @Param('id', ValidateMongoIdPipe) id: string, @Body() updateDto: UpdateDto) {
         if (updateDto.password)
             updateDto.password = await hashMake(updateDto.password);
 
