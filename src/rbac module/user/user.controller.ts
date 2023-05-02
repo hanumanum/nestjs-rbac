@@ -88,6 +88,19 @@ export class UserController {
         return this.rhService.updatedHandler(res, `${this.entityTitle} updated successfully`);
     }
 
+    /*
+    @Patch('roles/assign')
+    @Version('1')
+    async assignRoles(@Res() res, @Body() AssignRolesDto) {
+        const [error] = await this.service.assignRoles(AssignRolesDto);
+
+        if (error)
+            return this.rhService.errorHandler(res, error, `cannot assign roles to ${this.entityTitle}`);
+
+        return this.rhService.updatedHandler(res, `roles assigned successfully`);
+    }
+    */
+
     @Post('checkuser')
     @Version("1")
     async checkUser(@Res() res, @Body() checkUserDto: CheckUserDto) {

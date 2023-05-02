@@ -1,6 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 //import { Exclude } from 'class-transformer';
 import { Document } from 'mongoose';
+import { Role } from '../../role/entities/role.scheme';
+import { Type } from 'class-transformer';
+import mongoose from 'mongoose';
 
 @Schema({ timestamps: true })
 export class User {
@@ -13,6 +16,12 @@ export class User {
 
     @Prop()
     name: string;
+
+    @Prop({
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: Role.name }],
+    })
+    @Type(() => Role)
+    roles: Role;
 }
 
 export type UserDocument = User & Document;
