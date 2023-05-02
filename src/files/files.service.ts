@@ -15,7 +15,9 @@ type searchKeys = keyof typeof File.prototype;
 //TODO: make generic service
 @Injectable()
 export class FilesService implements IService {
-	constructor(@InjectModel(File.name, "nestrbac") private readonly model: Model<FileDocument>) { }
+	constructor(@InjectModel(File.name, "nestrbac")
+	private readonly model: Model<FileDocument>
+	) { }
 
 	async list(pageOptionsDto: PageOptionsDto, findFields: searchKeys[] = []): TypeErrorOrPageDtoTuple<FileDocument> {
 		try {
@@ -36,7 +38,6 @@ export class FilesService implements IService {
 
 	async create(createDto: CreateFileDto): TupleErrorOrData<FileDocument> {
 		try {
-
 			const createdDocument = new this.model(createDto);
 			const doc = await createdDocument.save();
 			return [null, doc];
@@ -46,7 +47,6 @@ export class FilesService implements IService {
 			return [err, null];
 		}
 	}
-
 
 	async one(id: string): TupleErrorOrData<FileDocument> {
 		try {
@@ -59,10 +59,9 @@ export class FilesService implements IService {
 		}
 	}
 
-
 	async remove(id: string): TupleErrorOrData<boolean> {
 		try {
-			const toRemove = await this.model.findById(id).exec() //findByIdAndDelete(id);
+			const toRemove = await this.model.findById(id).exec()
 			const file_url = toRemove.file_url
 			await toRemove.deleteOne()
 
@@ -85,5 +84,4 @@ export class FilesService implements IService {
 			return [error, null]
 		}
 	}
-
 }
