@@ -10,6 +10,8 @@ import { ValidateMongoIdPipe, documentToPureJSON } from '../../utils/mongo.utils
 import { hashMake } from '../../utils/encryption.utils';
 import { EnumFieldsFilterMode, ObjectTransformerLib } from '../../utils/object.transformers.lib';
 import { ConfigService } from '@nestjs/config';
+import { AssignRolesDto } from './dto/assign.role.dto';
+import { RoleService } from '../role/role.service';
 
 
 @Controller('user')
@@ -19,6 +21,7 @@ export class UserController {
     constructor(
         private readonly configService: ConfigService,
         private readonly service: PrimaryService,
+        private readonly rolesService: RoleService,
         private readonly rhService: ResponseHandlerService
     ) { }
 
@@ -88,18 +91,24 @@ export class UserController {
         return this.rhService.updatedHandler(res, `${this.entityTitle} updated successfully`);
     }
 
-    /*
-    @Patch('roles/assign')
-    @Version('1')
-    async assignRoles(@Res() res, @Body() AssignRolesDto) {
-        const [error] = await this.service.assignRoles(AssignRolesDto);
 
-        if (error)
-            return this.rhService.errorHandler(res, error, `cannot assign roles to ${this.entityTitle}`);
+    @Patch('assign/role')
+    @Version('1')
+    async assignRoles(@Res() res, @Body() assignRolesDto: AssignRolesDto) {
+        const [error_user, user] = await this.service.one(assignRolesDto.user_id);
+        if (error_user)
+            return this.rhService.errorHandler(res, error_user, `cannot find ${this.entityTitle}`);
+
+        const [error_roles, roles] = await this.rolesService.many(assignRolesDto.role_ids);
+        if (error_roles)
+            return this.rhService.errorHandler(res, error_roles, `cannot find roles`);
+
+        user.roles = roles
+        await user.save()
 
         return this.rhService.updatedHandler(res, `roles assigned successfully`);
     }
-    */
+
 
     @Post('checkuser')
     @Version("1")

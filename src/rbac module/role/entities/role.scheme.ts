@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 import { TypeRoutePersmission } from '../../common/types.common';
 
 @Schema({ timestamps: true })
-export class Role {
+export class Role extends Document {
     @Prop({ required: true, unique: true })
     title: string;
 
