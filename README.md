@@ -3,7 +3,7 @@
 - [x] Routes and Methods List
 - [x] File Upload and Files management system
 - [x] Roles
-- [ ] User to role relations Roles
+- [x] User to role relations Roles
 - [ ] Settings management system
 - [ ] Autorisation and authentication (Passport)
 - [ ] Write Tests

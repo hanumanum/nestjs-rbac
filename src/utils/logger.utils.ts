@@ -26,7 +26,7 @@ export const arrayLogger = (arrayOfObjects: TObject[], title: string, fields: st
 	}
 
 	if (fields.length === 0) {
-		console.log(`\n--->>> Start Of Array Logger:`, `${title}`, new Date())
+		console.log(`\n--->>> Start Of Array Logger:`, title, new Date())
 		console.table(arrayOfObjects)
 		console.log(`\n--->>> End Of Array Logger\n`)
 		return
@@ -46,7 +46,7 @@ export const arrayLogger = (arrayOfObjects: TObject[], title: string, fields: st
 			}, {})
 	});
 
-	console.log(`\n--->>> Start Of Array Logger:`, `${title}`, new Date())
+	console.log(`\n--->>> Start Of Array Logger:`, title, new Date())
 	console.table(arrayOfPartialObjects)
 	console.log(`\n--->>> End Of Array Logger\n`)
 }
