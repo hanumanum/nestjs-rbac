@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-//import { Exclude } from 'class-transformer';
 import { Document } from 'mongoose';
-import { RoleDocument, Role } from '../../role/entities/role.scheme';
+import { Role } from '../../role/entities/role.scheme';
 import { Type } from 'class-transformer';
 import mongoose from 'mongoose';
 
@@ -11,7 +10,6 @@ export class User extends Document {
     username: string;
 
     @Prop({ required: true })
-    //TODO: @Exclude()
     password: string;
 
     @Prop()
