@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsMongoId, IsNotEmpty } from 'class-validator';
-import { TypeMongoId } from '../../common/types.common';
+import { TypeMongoId } from '../../../common/types.common';
 
 export class AssignRolesDto {
     @ApiProperty()

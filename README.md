@@ -4,7 +4,7 @@
 - [x] File Upload and Files management system
 - [x] Roles
 - [x] User to role relations Roles
-- [ ] Settings management system
+- [x] Settings management system
 - [ ] Autorisation and authentication (Passport)
 - [ ] Write Tests
 - [ ] ALL TODOS IN CODE

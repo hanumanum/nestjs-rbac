@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty } from 'class-validator';
-import { TypeRoutePersmission } from '../../common/types.common';
+import { TypeRoutePersmission } from '../../../common/types.common';
 
 export class CreateRoleDto {
     @ApiProperty()

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { TypeRoutePersmission } from '../../common/types.common';
+import { TypeRoutePersmission } from '../../../common/types.common';
 
 @Schema({ timestamps: true })
 export class Role extends Document {

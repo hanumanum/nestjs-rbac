@@ -8,7 +8,7 @@ import { PageOptionsDto, TypeErrorOrPageDtoTuple } from '../../common/dtos';
 import { errorLogger } from '../../utils/logger.utils';
 import { listMongoCollectionWithPagination } from '../../utils/mongo.utils';
 import { Role as Entity, RoleDocument as MongoDocument } from './entities/role.scheme';
-import { TypeMongoId } from '../common/types.common';
+import { TypeMongoId } from '../../common/types.common';
 
 type searchKeys = keyof typeof Entity.prototype;
 
@@ -56,7 +56,6 @@ export class RoleService implements IService {
         }
     }
 
-
     async many(ids: TypeMongoId[]): TupleErrorOrData<MongoDocument[]> {
         try {
             const documents = await this.model.find({ "_id": { $in: ids } }).exec();
@@ -67,7 +66,6 @@ export class RoleService implements IService {
             return [err, null]
         }
     }
-
 
     async remove(id: string): TupleErrorOrData<boolean> {
         try {

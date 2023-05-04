@@ -9,7 +9,6 @@ import { File, FileDocument } from './entities/files.scheme';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
-
 type searchKeys = keyof typeof File.prototype;
 
 //TODO: make generic service

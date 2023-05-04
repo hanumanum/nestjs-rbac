@@ -1,4 +1,5 @@
 //import { connector_v2 as IAppointmentsV2 } from '../grpc/proto/connector_v2/appointments';
+import { documentToPureJSON } from './mongo.utils';
 import { TObject, objectFlatten } from './object.utils';
 import { EnumFieldsFilterMode, objectFieldsFilter, objectRenameFields, addFields, transformValueBy, TRanameFieldsConfig, TFieldAndFunctionConfg } from './object.utils';
 
@@ -12,6 +13,11 @@ export class ObjectTransformerLib {
 
 	getData() {
 		return this.data;
+	}
+
+	mongoToPureJSON() {
+		this.data = documentToPureJSON(this.data)
+		return this
 	}
 
 	flatten(keyToNotFlatten?: string) {

@@ -1,8 +1,21 @@
 import { Module } from '@nestjs/common';
-import { SettingsService } from './settings.service';
+import { SettingService } from './settings.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Setting, SettingSchema } from './entities/setting.scheme';
+import { ResponseHandlerService } from '../utils/response.handler.utils';
+import { SettingController } from './settings.controller';
 
 @Module({
-	providers: [SettingsService],
-	exports: [SettingsService]
+	imports: [
+		MongooseModule.forFeature([{
+			name: Setting.name,
+			schema: SettingSchema
+		}], 'nestrbac'),
+	],
+
+	providers: [SettingService, ResponseHandlerService],
+	controllers: [SettingController]
 })
-export class SettingsModule {}
+export class SettingsModule { }
+
+

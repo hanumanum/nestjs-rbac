@@ -5,6 +5,7 @@ import { ResponseHandlerService } from './utils/response.handler.utils';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './rbac module/rbac.module';
 import { FilesModule } from './files module/files.module'; 
+import { SettingsModule } from './settings module/settings.module';
 
 @Module({
 	imports: [
@@ -21,7 +22,8 @@ import { FilesModule } from './files module/files.module';
 			}),
 		}),
 		UsersModule,
-		FilesModule
+		FilesModule,
+		SettingsModule
 	],
 	providers: [
 		AppService,

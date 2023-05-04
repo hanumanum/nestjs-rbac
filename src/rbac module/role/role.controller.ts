@@ -52,7 +52,8 @@ export class RoleController {
         const _user = documentToPureJSON(user)
         delete _user.password
 
-        return this.rhService.dataHandler(res, user);
+        //TODO: check this _user or user ????
+        return this.rhService.dataHandler(res, _user);
     }
 
     @Put()
