@@ -5,10 +5,10 @@ import { RoleService as PrimaryService } from './role.service';
 import { PageOptionsDto } from '../../common/dtos';
 import { ResponseHandlerService } from '../../utils/response.handler.utils';
 import { ApiTags } from '@nestjs/swagger';
-import { ValidateMongoIdPipe, documentToPureJSON } from '../../utils/mongo.utils';
+import { ValidateMongoIdPipe } from '../../utils/mongo.utils';
 import { ConfigService } from '@nestjs/config';
-import { errorLogger } from '../../utils/logger.utils';
-
+import { EnumFieldsFilterMode } from '../../utils/object.utils';
+import { ObjectTransformerLib } from '../../utils/object.transformers.lib';
 
 @Controller('role')
 @ApiTags('Role Management')
@@ -36,23 +36,24 @@ export class RoleController {
     async routes(@Res() res) {
         return res.json(global.routesList)
     }
-    
+
     @Get(':id')
     @Version("1")
     async one(@Res() res, @Param('id', ValidateMongoIdPipe) id: string) {
         const [error, user] = await this.service.one(id);
-       
+
         if (error)
             return this.rhService.errorHandler(res, error, `cannot get ${this.entityTitle} details`);
 
-        if(!user) {
+        if (!user) {
             return this.rhService.notFoundHandler(res, `${this.entityTitle}`)
         }
 
-        const _user = documentToPureJSON(user)
-        delete _user.password
+        const _user = new ObjectTransformerLib(user)
+            .mongoToPureJSON()
+            .filterFields(EnumFieldsFilterMode.remove, ['password'])
+            .getData()
 
-        //TODO: check this _user or user ????
         return this.rhService.dataHandler(res, _user);
     }
 

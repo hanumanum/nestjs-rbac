@@ -17,14 +17,6 @@ export class ValidateMongoIdPipe implements PipeTransform<string> {
     };
 }
 
-export const documentToPureJSON = (document) => {
-    if (Array.isArray(document)) {
-        return document.map((doc) => doc._doc)
-    }
-
-    return document._doc
-}
-
 export const listMongoCollectionWithPagination = async (model, pageOptionsDto, findFields = [], relations: string[] = []) => {
     try {
 

@@ -188,3 +188,11 @@ export const clearKeysFromObject = (obj: TObject, keys: Array<string>) => {
         }
     }, {})
 }
+
+export const documentToPureJSON = (document) => {
+    if (Array.isArray(document)) {
+        return document.map((doc) => doc._doc)
+    }
+
+    return document._doc
+}

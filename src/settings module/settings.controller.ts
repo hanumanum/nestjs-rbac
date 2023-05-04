@@ -4,7 +4,6 @@ import { SettingService as PrimaryService } from './settings.service';
 import { PageOptionsDto } from '../common/dtos';
 import { ResponseHandlerService } from '../utils/response.handler.utils';
 import { ApiTags } from '@nestjs/swagger';
-import { documentToPureJSON } from '../utils/mongo.utils';
 import { ConfigService } from '@nestjs/config';
 import { ObjectTransformerLib } from '../utils/object.transformers.lib';
 import { EnumFieldsFilterMode } from '../utils/object.utils';

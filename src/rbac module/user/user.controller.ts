@@ -6,7 +6,7 @@ import { CheckUserDto } from './dto/check.user.dto';
 import { PageOptionsDto } from '../../common/dtos';
 import { ResponseHandlerService } from '../../utils/response.handler.utils';
 import { ApiTags } from '@nestjs/swagger';
-import { ValidateMongoIdPipe, documentToPureJSON } from '../../utils/mongo.utils';
+import { ValidateMongoIdPipe } from '../../utils/mongo.utils';
 import { hashMake } from '../../utils/encryption.utils';
 import { EnumFieldsFilterMode, ObjectTransformerLib } from '../../utils/object.transformers.lib';
 import { ConfigService } from '@nestjs/config';
@@ -33,9 +33,11 @@ export class UserController {
         if (error)
             return this.rhService.errorHandler(res, error, `cannot get ${this.entityTitle}s list`);
 
-        pageDto.data = documentToPureJSON(pageDto.data)
-        const transformer = new ObjectTransformerLib(pageDto.data)
-        pageDto.data = transformer.filterFields(EnumFieldsFilterMode.remove, ['password']).getData()
+
+        pageDto.data = new ObjectTransformerLib(pageDto.data)
+            .mongoToPureJSON()
+            .filterFields(EnumFieldsFilterMode.remove, ['password'])
+            .getData()
 
         return this.rhService.dataPaginatedHandler(res, pageDto)
     }
@@ -48,10 +50,12 @@ export class UserController {
         if (error)
             return this.rhService.errorHandler(res, error, `cannot get ${this.entityTitle} details`);
 
-        const _user = documentToPureJSON(user)
-        delete _user.password
+        const _user = new ObjectTransformerLib(user)
+            .mongoToPureJSON()
+            .filterFields(EnumFieldsFilterMode.remove, ['password'])
+            .getData()
 
-        return this.rhService.dataHandler(res, user);
+        return this.rhService.dataHandler(res, _user);
     }
 
     @Put()
@@ -91,7 +95,6 @@ export class UserController {
         return this.rhService.updatedHandler(res, `${this.entityTitle} updated successfully`);
     }
 
-
     @Patch('assign/role')
     @Version('1')
     async assignRoles(@Res() res, @Body() assignRolesDto: AssignRolesDto) {
@@ -108,7 +111,6 @@ export class UserController {
 
         return this.rhService.updatedHandler(res, `roles assigned successfully`);
     }
-
 
     @Post('checkuser')
     @Version("1")

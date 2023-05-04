@@ -5,10 +5,8 @@ import { SetSettingDto as SettingSetDto } from './dto/set.setting.dto';
 import { TupleErrorOrData } from '../common/interfaces/service.interface';
 import { PageOptionsDto, TypeErrorOrPageDtoTuple } from '../common/dtos';
 import { errorLogger } from '../utils/logger.utils';
-import { listMongoCollectionWithPagination, documentToPureJSON } from '../utils/mongo.utils';
+import { listMongoCollectionWithPagination } from '../utils/mongo.utils';
 import { Setting as Entity, SettingDocument as MongoDocument } from './entities/setting.scheme';
-import { ObjectTransformerLib } from '../utils/object.transformers.lib';
-import { EnumFieldsFilterMode } from '../utils/object.utils';
 
 type searchKeys = keyof typeof Entity.prototype;
 
