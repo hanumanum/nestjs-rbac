@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Res, Version } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Res, Version, UseGuards } from '@nestjs/common';
 import { CreateUserDto as CreateDto } from './dto/create.user.dto';
 import { UpdateUserDto as UpdateDto } from './dto/update.user.dto';
 import { UsersService as PrimaryService } from './user.service';
@@ -12,6 +12,7 @@ import { EnumFieldsFilterMode, ObjectTransformerLib } from '../../utils/object.t
 import { ConfigService } from '@nestjs/config';
 import { AssignRolesDto } from './dto/assign.role.dto';
 import { RoleService } from '../role/role.service';
+import { JwtAuthGuard } from '../../auth/auth.guards';
 
 
 @Controller('user')
@@ -27,6 +28,7 @@ export class UserController {
 
     @Get('page')
     @Version("1")
+    //@UseGuards(JwtAuthGuard)
     async list(@Res() res, @Query() pageOptionsDto: PageOptionsDto) {
         const [error, pageDto] = await this.service.list(pageOptionsDto, ['name', 'username']);
 

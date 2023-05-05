@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User as Entity, UserDocument as MongoDocument } from './entities/user.scheme';
+import { User as Entity, UserDocument as MongoDocument, UserDocument } from './entities/user.scheme';
 import { CreateUserDto as CreateDto } from './dto/create.user.dto';
 import { UpdateUserDto as UpdateDto } from './dto/update.user.dto';
 import { IService, TupleErrorOrData } from '../../common/interfaces/service.interface';
@@ -55,14 +55,34 @@ export class UsersService implements IService {
         }
     }
 
+    //TODO: probably not needed
     async checkPassowrd(checkPassowrd: CheckUserDto): TupleErrorOrData<boolean> {
         try {
             const document = await this.model.findOne({ username: checkPassowrd.username }).exec();
-            if(!document)
+            if (!document)
                 return [null, false]
-            
+
             const isSame = await hashCompare(checkPassowrd.password, document.password)
             return [null, isSame]
+        }
+        catch (error) {
+            errorLogger(error)
+            return [error, false]
+        }
+
+    }
+
+    async checkUserPassword(checkPassowrd: CheckUserDto): TupleErrorOrData<UserDocument> {
+        try {
+            const document = await this.model
+                .findOne({ username: checkPassowrd.username })
+                .exec();
+
+            if (!document)
+                return [null, null]
+
+            const isSame = await hashCompare(checkPassowrd.password, document.password)
+            return (isSame) ? [null, document] : [null, null]
         }
         catch (error) {
             errorLogger(error)
@@ -70,6 +90,7 @@ export class UsersService implements IService {
         }
 
     }
+
 
 
     async remove(id: string): TupleErrorOrData<boolean> {

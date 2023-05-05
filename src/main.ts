@@ -5,24 +5,23 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as bodyParser from 'body-parser';
-import {getRouteList} from './rbac module/rbac.utils';
+import { getRouteList } from './rbac module/rbac.utils';
 import { arrayLogger } from './utils/logger.utils';
-//import expressListRoutes from 'express-list-routes';
-
 
 async function bootstrap() {
 	//await load();
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 	const configService = app.get(ConfigService);
 	const port = configService.get('PORT');
-	global.encKey = configService.get('encKey_iv_hex');
+	global.encKey = configService.get('encKey_iv_hex'); //TODO: review this
 
 	app.enableVersioning();
 
+	/* 
 	app.setGlobalPrefix('protected', {
-		exclude: [{ path: '/public/auth/admin', method: RequestMethod.POST },
+		exclude: [{ path: '/v1/auth/login', method: RequestMethod.POST },
 		]
-	});
+	}); */
 
 	app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
@@ -40,13 +39,17 @@ async function bootstrap() {
 			.setTitle('Nest RBAC with MongoDB API docs')
 			.setDescription('API docs')
 			.setVersion('1.0')
-			.addServer(`http://localhost:${port}/protected`, 'Localhost Protected Calls')
+			//.addServer(`http://localhost:${port}/protected`, 'Localhost Protected Calls')
 			.addServer(`http://localhost:${port}/`, 'Localhost Public Calls')
-			.addSecurity('x-user-meta', {
-				type: 'apiKey',
-				name: 'x-user-meta',
-				in: 'header'
-			})
+			.addBearerAuth(
+				{
+					type: 'http',
+					scheme: 'bearer',
+					bearerFormat: 'JWT',
+					in: 'header'
+				},
+				'jwt',
+			)
 			.build();
 		const document = SwaggerModule.createDocument(app, config, { ignoreGlobalPrefix: true });
 		SwaggerModule.setup('docs', app, document);

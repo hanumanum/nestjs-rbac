@@ -6,7 +6,7 @@ import { UserController } from "./user/user.controller";
 import { ResponseHandlerService } from "../utils/response.handler.utils";
 import { Role, RoleSchema } from "./role/entities/role.scheme";
 import { RoleService } from "./role/role.service";
-import {RoleController} from './role/role.controller';
+import { RoleController } from './role/role.controller';
 
 @Module({
     imports: [
@@ -22,7 +22,7 @@ import {RoleController} from './role/role.controller';
     ],
 
     providers: [UsersService, RoleService, ResponseHandlerService],
-    //exports: [UsersService, RoleService],
+    exports: [UsersService, RoleService],
     controllers: [UserController, RoleController]
 })
-export class UsersModule { }
+export class RBACModule { }
