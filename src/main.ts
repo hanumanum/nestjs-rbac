@@ -13,7 +13,7 @@ async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 	const configService = app.get(ConfigService);
 	const port = configService.get('PORT');
-	global.encKey = configService.get('encKey_iv_hex'); //TODO: review this
+	global.encKey = configService.get('ENCKEY_IV_HEX'); //TODO: review this
 
 	app.enableVersioning();
 

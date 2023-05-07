@@ -23,7 +23,7 @@ export class FilesController {
 	) { }
 
 	onModuleInit() {
-		this.uploadDirectory = this.configService.get('filespath');
+		this.uploadDirectory = this.configService.get('UPLOAD_DIRECTORY');
 		mkdir(`./${this.uploadDirectory}`, { recursive: true }, (err) => {
 			if (err) throw err;
 		});

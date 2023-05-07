@@ -8,6 +8,6 @@
 - [x] Autorisation and authentication (Passport)
 - [ ] Autorisation and authentication (RBAC part)
 - [ ] Write Tests
-- [ ] All Environment variables to upperCase
+- [x] All Environment variables to upperCase
 - [ ] ALL TODOS IN CODE
 - [ ] Clean Up package.json

@@ -19,7 +19,7 @@ import { FileSchema, File } from './entities/files.scheme';
 			useFactory: async (configService: ConfigService) => ({
 				storage: diskStorage({
 					destination: (_: any, __: any, cb: any) => {
-						const directory = configService.get('filespath');
+						const directory = configService.get('UPLOAD_DIRECTORY');
 						return cb(null, `./${directory}`);
 					},
 					filename: (_, file, cb) => {
