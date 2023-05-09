@@ -44,6 +44,17 @@ export class UsersService implements IService {
         }
     }
 
+    async oneByUsername(username: string): TupleErrorOrData<MongoDocument> {
+        try{
+            const user = await this.model.findOne({username: username}).populate("roles").exec();
+            return [null, user]
+        }
+        catch(err){
+            errorLogger(err)
+            return [err, null]
+        }
+    }
+
     async one(id: string): TupleErrorOrData<MongoDocument> {
         try {
             const document = await this.model.findById(id).populate("roles").exec();
@@ -76,12 +87,14 @@ export class UsersService implements IService {
         try {
             const document = await this.model
                 .findOne({ username: checkPassowrd.username })
+                .populate("roles")
                 .exec();
 
             if (!document)
                 return [null, null]
 
             const isSame = await hashCompare(checkPassowrd.password, document.password)
+            
             return (isSame) ? [null, document] : [null, null]
         }
         catch (error) {
