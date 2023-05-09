@@ -9,6 +9,8 @@ import { ValidateMongoIdPipe } from '../../utils/mongo.utils';
 import { ConfigService } from '@nestjs/config';
 import { EnumFieldsFilterMode } from '../../utils/object.utils';
 import { ObjectTransformerLib } from '../../utils/object.transformers.lib';
+import { AssignRolesDto } from '../user/dto/assign.role.dto';
+import { UsersService } from '../user/user.service';
 
 @Controller('role')
 @ApiTags('Role Management')
@@ -17,6 +19,7 @@ export class RoleController {
     constructor(
         private readonly configService: ConfigService,
         private readonly service: PrimaryService,
+        private readonly userService: UsersService,
         private readonly rhService: ResponseHandlerService
     ) { }
 
@@ -64,7 +67,7 @@ export class RoleController {
         if (error)
             return this.rhService.errorHandler(res, error, `cannot create ${this.entityTitle}`);
 
-        return this.rhService.createdHandler(res, `${this.entityTitle} created successfully`);
+        return this.rhService.createdHandler(res, this.entityTitle);
     }
 
     @Delete(':id')
@@ -75,8 +78,27 @@ export class RoleController {
         if (error)
             return this.rhService.errorHandler(res, error, `cannot delete ${this.entityTitle}`);
 
-        return this.rhService.deletedHandler(res, `${this.entityTitle}`);
+        return this.rhService.deletedHandler(res, this.entityTitle);
     }
+
+
+    @Patch('assign')
+    @Version('1')
+    async assignRoles(@Res() res, @Body() assignRolesDto: AssignRolesDto) {
+        const [error_user, user] = await this.userService.one(assignRolesDto.user_id);
+        if (error_user)
+            return this.rhService.errorHandler(res, error_user, `cannot find ${this.entityTitle}`);
+
+        const [error_roles, roles] = await this.service.many(assignRolesDto.role_ids);
+        if (error_roles)
+            return this.rhService.errorHandler(res, error_roles, `cannot find roles`);
+
+        user.roles = roles
+        await user.save()
+
+        return this.rhService.updatedHandler(res, this.entityTitle);
+    }
+
 
     @Patch(':id')
     @Version("1")
@@ -86,7 +108,10 @@ export class RoleController {
         if (error)
             return this.rhService.errorHandler(res, error, `cannot update ${this.entityTitle}`);
 
-        return this.rhService.updatedHandler(res, `${this.entityTitle} updated successfully`);
+        return this.rhService.updatedHandler(res, this.entityTitle);
     }
+
+
+
 
 }

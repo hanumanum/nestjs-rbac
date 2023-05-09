@@ -18,8 +18,10 @@ async function bootstrap() {
 	app.enableVersioning();
 
 	/* 
-	app.setGlobalPrefix('protected', {
-		exclude: [{ path: '/v1/auth/login', method: RequestMethod.POST },
+	app.setGlobalPrefix('private', {
+		exclude: [
+			{ path: '/v1/auth/login', method: RequestMethod.POST },
+			{ path: '/v1/auth/profile', method: RequestMethod.GET },
 		]
 	}); */
 
@@ -39,8 +41,8 @@ async function bootstrap() {
 			.setTitle('Nest RBAC with MongoDB API docs')
 			.setDescription('API docs')
 			.setVersion('1.0')
-			//.addServer(`http://localhost:${port}/protected`, 'Localhost Protected Calls')
-			.addServer(`http://localhost:${port}/`, 'Localhost Public Calls')
+			//.addServer(`http://localhost:${port}/private`, 'Private Calls')
+			.addServer(`http://localhost:${port}/`, 'Public Calls')
 			.addBearerAuth(
 				{
 					type: 'http',

@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Res, Ver
 import { CreateUserDto as CreateDto } from './dto/create.user.dto';
 import { UpdateUserDto as UpdateDto } from './dto/update.user.dto';
 import { UsersService as PrimaryService } from './user.service';
-import { CheckUserDto } from './dto/check.user.dto';
 import { PageOptionsDto } from '../../common/dtos';
 import { ResponseHandlerService } from '../../utils/response.handler.utils';
 import { ApiTags } from '@nestjs/swagger';
@@ -10,10 +9,7 @@ import { ValidateMongoIdPipe } from '../../utils/mongo.utils';
 import { hashMake } from '../../utils/encryption.utils';
 import { EnumFieldsFilterMode, ObjectTransformerLib } from '../../utils/object.transformers.lib';
 import { ConfigService } from '@nestjs/config';
-import { AssignRolesDto } from './dto/assign.role.dto';
 import { RoleService } from '../role/role.service';
-import { JwtAuthGuard } from '../../auth/auth.guards';
-
 
 @Controller('user')
 @ApiTags('User Management')
@@ -22,13 +18,11 @@ export class UserController {
     constructor(
         private readonly configService: ConfigService,
         private readonly service: PrimaryService,
-        private readonly rolesService: RoleService,
         private readonly rhService: ResponseHandlerService
     ) { }
 
     @Get('page')
     @Version("1")
-    //@UseGuards(JwtAuthGuard)
     async list(@Res() res, @Query() pageOptionsDto: PageOptionsDto) {
         const [error, pageDto] = await this.service.list(pageOptionsDto, ['name', 'username']);
 
@@ -69,7 +63,7 @@ export class UserController {
         if (error)
             return this.rhService.errorHandler(res, error, `cannot create ${this.entityTitle}`);
 
-        return this.rhService.createdHandler(res, `${this.entityTitle} created successfully`);
+        return this.rhService.createdHandler(res, this.entityTitle);
     }
 
     @Delete(':id')
@@ -80,7 +74,7 @@ export class UserController {
         if (error)
             return this.rhService.errorHandler(res, error, `cannot delete ${this.entityTitle}`);
 
-        return this.rhService.deletedHandler(res, `${this.entityTitle} deleted successfully`);
+        return this.rhService.deletedHandler(res, this.entityTitle);
     }
 
     @Patch(':id')
@@ -94,27 +88,10 @@ export class UserController {
         if (error)
             return this.rhService.errorHandler(res, error, `cannot update ${this.entityTitle}`);
 
-        return this.rhService.updatedHandler(res, `${this.entityTitle} updated successfully`);
+        return this.rhService.updatedHandler(res, this.entityTitle);
     }
 
-    @Patch('assign/role')
-    @Version('1')
-    async assignRoles(@Res() res, @Body() assignRolesDto: AssignRolesDto) {
-        const [error_user, user] = await this.service.one(assignRolesDto.user_id);
-        if (error_user)
-            return this.rhService.errorHandler(res, error_user, `cannot find ${this.entityTitle}`);
-
-        const [error_roles, roles] = await this.rolesService.many(assignRolesDto.role_ids);
-        if (error_roles)
-            return this.rhService.errorHandler(res, error_roles, `cannot find roles`);
-
-        user.roles = roles
-        await user.save()
-
-        return this.rhService.updatedHandler(res, `roles assigned successfully`);
-    }
-
-    @Post('checkuser')
+/*     @Post('checkuser')
     @Version("1")
     async checkUser(@Res() res, @Body() checkUserDto: CheckUserDto) {
         const [error, user] = await this.service.checkPassowrd(checkUserDto);
@@ -123,5 +100,5 @@ export class UserController {
 
         return this.rhService.dataHandler(res, user);
     }
-
+ */
 }

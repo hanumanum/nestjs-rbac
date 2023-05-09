@@ -60,7 +60,7 @@ export class SettingController {
         if (error)
             return this.rhService.errorHandler(res, error, `cannot create ${this.entityTitle}`);
 
-        return this.rhService.createdHandler(res, `${this.entityTitle} created successfully`);
+        return this.rhService.createdHandler(res, this.entityTitle);
     }
 
 }

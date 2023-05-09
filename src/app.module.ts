@@ -4,9 +4,11 @@ import { AppService } from './app.service';
 import { ResponseHandlerService } from './utils/response.handler.utils';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RBACModule } from './rbac module/rbac.module';
-import { FilesModule } from './files module/files.module'; 
+import { FilesModule } from './files module/files.module';
 import { SettingsModule } from './settings module/settings.module';
 import { AuthModule } from './auth/auth.module';
+import { RBACGuard } from './auth/auth.guards';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
 	imports: [
@@ -30,11 +32,16 @@ import { AuthModule } from './auth/auth.module';
 	],
 	providers: [
 		AppService,
-		ResponseHandlerService]
+		ResponseHandlerService,
+		{
+			provide: APP_GUARD,
+			useClass: RBACGuard,
+		}
+	]
 })
 
 export class AppModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
-		//consumer.apply(AuthMiddleware).exclude('/public/(.*)').forRoutes('*');
+		//consumer.apply(AutorizationMiddleware).exclude('/public/(.*)').forRoutes('*');
 	}
 }

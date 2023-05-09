@@ -10,16 +10,31 @@ import { errorLogger } from '../../utils/logger.utils';
 import { listMongoCollectionWithPagination } from '../../utils/mongo.utils';
 import { hashCompare } from '../../utils/encryption.utils';
 import { CheckUserDto } from './dto/check.user.dto';
+import { Role as RoleEntity } from '../role/entities/role.scheme';
+import { ConfigService } from '@nestjs/config';
 
 type searchKeys = keyof typeof Entity.prototype;
 
 @Injectable()
 export class UsersService implements IService {
-    constructor(@InjectModel(Entity.name, "nestrbac") private readonly model: Model<MongoDocument>) { }
+    constructor(
+        @InjectModel(Entity.name, "nestrbac") private readonly model: Model<MongoDocument>,
+        @InjectModel(RoleEntity.name, "nestrbac") private readonly rolesModel: Model<MongoDocument>,
+        private readonly configService: ConfigService
+    ) { }
 
     async create(createDto: CreateDto): TupleErrorOrData<MongoDocument> {
         try {
             const document = new this.model(createDto);
+
+            if (this.configService.get("IS_FIRST_RUN") === "true") {
+                const role = await this.rolesModel.create({
+                    title: "superadmin",
+                    permissions: []
+                })
+                document.roles = [role._id]
+            }
+
             const userDoc = await document.save();
             return [null, userDoc];
         }
@@ -45,11 +60,11 @@ export class UsersService implements IService {
     }
 
     async oneByUsername(username: string): TupleErrorOrData<MongoDocument> {
-        try{
-            const user = await this.model.findOne({username: username}).populate("roles").exec();
+        try {
+            const user = await this.model.findOne({ username: username }).populate("roles").exec();
             return [null, user]
         }
-        catch(err){
+        catch (err) {
             errorLogger(err)
             return [err, null]
         }
@@ -94,7 +109,7 @@ export class UsersService implements IService {
                 return [null, null]
 
             const isSame = await hashCompare(checkPassowrd.password, document.password)
-            
+
             return (isSame) ? [null, document] : [null, null]
         }
         catch (error) {
