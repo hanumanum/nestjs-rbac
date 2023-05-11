@@ -64,5 +64,4 @@ export class SettingService {
 			return [error, null]
 		}
 	}
-
 }

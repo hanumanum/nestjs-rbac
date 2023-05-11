@@ -16,6 +16,5 @@ export class PageDto<T> {
 	}
 }
 
-/* export type PageDtoOrError<T> = { pageDto: PageDto<T>; error: any }; */
 export type TypeErrorOrPageDtoTuple<T> = Promise<[Error | null, PageDto<T> | null]>;
 export type EntityOrError<T> = { data: T; error: any };

@@ -85,6 +85,7 @@ export class UsersService implements IService {
     }
 
     //TODO: probably not needed
+    /* 
     async checkPassowrd(checkPassowrd: CheckUserDto): TupleErrorOrData<boolean> {
         try {
             const document = await this.model.findOne({ username: checkPassowrd.username }).exec();
@@ -99,10 +100,11 @@ export class UsersService implements IService {
             return [error, false]
         }
 
-    }
+    } */
 
     async checkUserPassword(checkPassowrd: CheckUserDto): TupleErrorOrData<UserDocument> {
         try {
+
             const document = await this.model
                 .findOne({ username: checkPassowrd.username })
                 .populate("roles")
@@ -121,8 +123,6 @@ export class UsersService implements IService {
         }
 
     }
-
-
 
     async remove(id: string): TupleErrorOrData<boolean> {
         try {

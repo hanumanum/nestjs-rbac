@@ -1,22 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Res, Version, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Put, Query, Res, Version, UseGuards } from '@nestjs/common';
 import { CreateUserDto as CreateDto } from './dto/create.user.dto';
 import { UpdateUserDto as UpdateDto } from './dto/update.user.dto';
 import { UsersService as PrimaryService } from './user.service';
 import { PageOptionsDto } from '../../common/dtos';
 import { ResponseHandlerService } from '../../utils/response.handler.utils';
-import {ApiTags, ApiBearerAuth} from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { ValidateMongoIdPipe } from '../../utils/mongo.utils';
 import { hashMake } from '../../utils/encryption.utils';
 import { EnumFieldsFilterMode, ObjectTransformerLib } from '../../utils/object.transformers.lib';
 import { ConfigService } from '@nestjs/config';
-import { RoleService } from '../role/role.service';
-import {JwtAuthGuard, RBACGuard} from '../../auth/auth.guards';
+import { JwtAuthGuard, RBACGuard } from '../auth/auth.guards';
 
 @Controller('user')
 @ApiTags('User Management')
 @UseGuards(JwtAuthGuard, RBACGuard)
 @ApiBearerAuth('jwt')
-
 export class UserController {
     private readonly entityTitle = 'user';
     constructor(
@@ -95,14 +93,4 @@ export class UserController {
         return this.rhService.updatedHandler(res, this.entityTitle);
     }
 
-/*     @Post('checkuser')
-    @Version("1")
-    async checkUser(@Res() res, @Body() checkUserDto: CheckUserDto) {
-        const [error, user] = await this.service.checkPassowrd(checkUserDto);
-        if (error)
-            return this.rhService.errorHandler(res, error, `cannot get ${this.entityTitle} details`);
-
-        return this.rhService.dataHandler(res, user);
-    }
- */
 }

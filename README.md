@@ -6,8 +6,11 @@
 - [x] User to role relations Roles
 - [x] Settings management system
 - [x] Autorisation and authentication (Passport)
-- [ ] Autorisation and authentication (RBAC part)
+- [x] Autorisation and authentication (RBAC part)
 - [ ] Write Tests
 - [x] All Environment variables to upperCase
 - [ ] ALL TODOS IN CODE
 - [ ] Clean Up package.json
+- [ ] Remove Swagger
+- [ ] add login and register controllers
+- [ ] add mock public controller

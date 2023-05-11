@@ -7,7 +7,7 @@ export class Role extends Document {
     @Prop({ required: true, unique: true })
     title: string;
 
-    @Prop({ required: true})
+    @Prop({ required: true })
     permissions: TypeRoutePersmission[]
 }
 

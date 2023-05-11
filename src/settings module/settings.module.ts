@@ -17,5 +17,3 @@ import { SettingController } from './settings.controller';
 	controllers: [SettingController]
 })
 export class SettingsModule { }
-
-

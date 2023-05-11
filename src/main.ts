@@ -1,4 +1,4 @@
-import { RequestMethod, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -9,7 +9,6 @@ import { getRouteList } from './rbac module/rbac.utils';
 import { arrayLogger } from './utils/logger.utils';
 
 async function bootstrap() {
-	//await load();
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 	const configService = app.get(ConfigService);
 	const port = configService.get('PORT');

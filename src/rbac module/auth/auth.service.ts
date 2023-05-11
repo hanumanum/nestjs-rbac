@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '../rbac module/user/user.service';
-import { CheckUserDto } from '../rbac module/user/dto/check.user.dto';
-import { errorLogger } from '../utils/logger.utils';
+import { UsersService } from '../user/user.service';
+import { CheckUserDto } from '../user/dto/check.user.dto';
+import { errorLogger } from '../../utils/logger.utils';
 import { JwtService } from '@nestjs/jwt';
-import { EnumFieldsFilterMode, ObjectTransformerLib } from '../utils/object.transformers.lib';
+import { EnumFieldsFilterMode, ObjectTransformerLib } from '../../utils/object.transformers.lib';
 
 
 @Injectable()
@@ -13,27 +13,32 @@ export class AuthService {
 
     //Will called by LocalStrategy before this.login method
     async validateUser(checkUserDto: CheckUserDto) {
-        console.log("validate called")
-        const [error, user] = await this.usersService.checkUserPassword(checkUserDto);
+        try {
+            const [error, user] = await this.usersService.checkUserPassword(checkUserDto);
 
-        if (error) {
+            if (error) {
+                errorLogger(error)
+                return null
+            }
+
+            if (!user)
+                return null
+
+            const result = new ObjectTransformerLib(user)
+                .mongoToPureJSON()
+                .filterFields(EnumFieldsFilterMode.remove, ["createdAt", "updatedAt", "__v", "password"])
+                .getData();
+
+            return result
+
+        }
+        catch (error) {
             errorLogger(error)
             return null
         }
-
-        if (!user)
-            return null
-
-        const result = new ObjectTransformerLib(user)
-            .mongoToPureJSON()
-            .filterFields(EnumFieldsFilterMode.remove, ["createdAt", "updatedAt", "__v", "password"])
-            .getData();
-
-        return result
     }
 
     async login(username: string) {
-        console.log("login called")
         const [error, user] = await this.usersService.oneByUsername(username);
 
         if (error || !user) {

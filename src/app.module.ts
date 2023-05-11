@@ -6,9 +6,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { RBACModule } from './rbac module/rbac.module';
 import { FilesModule } from './files module/files.module';
 import { SettingsModule } from './settings module/settings.module';
-import { AuthModule } from './auth/auth.module';
-import { RBACGuard } from './auth/auth.guards';
-import { APP_GUARD } from '@nestjs/core';
 
 @Module({
 	imports: [
@@ -24,11 +21,9 @@ import { APP_GUARD } from '@nestjs/core';
 				uri: config.get<string>('MONGO_CONNECTION_STRING'),
 			}),
 		}),
-		AuthModule,
 		RBACModule,
 		FilesModule,
 		SettingsModule,
-		AuthModule
 	],
 	providers: [
 		AppService,

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Res, Version, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Put, Query, Res, Version, UseGuards } from '@nestjs/common';
 import { CreateRoleDto as CreateDto } from './dto/create.role.dto';
 import { UpdateRoleDto as UpdateDto } from './dto/update.role.dto';
 import { RoleService as PrimaryService } from './role.service';
@@ -11,7 +11,7 @@ import { EnumFieldsFilterMode } from '../../utils/object.utils';
 import { ObjectTransformerLib } from '../../utils/object.transformers.lib';
 import { AssignRolesDto } from '../user/dto/assign.role.dto';
 import { UsersService } from '../user/user.service';
-import { JwtAuthGuard, RBACGuard } from '../../auth/auth.guards';
+import { JwtAuthGuard, RBACGuard } from '../auth/auth.guards';
 
 @Controller('role')
 @ApiTags('Role Management')
@@ -67,6 +67,7 @@ export class RoleController {
     @Version("1")
     async create(@Res() res, @Body() createDto: CreateDto) {
         const [error] = await this.service.create(createDto);
+
         if (error)
             return this.rhService.errorHandler(res, error, `cannot create ${this.entityTitle}`);
 
@@ -84,11 +85,11 @@ export class RoleController {
         return this.rhService.deletedHandler(res, this.entityTitle);
     }
 
-
     @Patch('assign')
     @Version('1')
     async assignRoles(@Res() res, @Body() assignRolesDto: AssignRolesDto) {
         const [error_user, user] = await this.userService.one(assignRolesDto.user_id);
+
         if (error_user)
             return this.rhService.errorHandler(res, error_user, `cannot find ${this.entityTitle}`);
 
@@ -102,7 +103,6 @@ export class RoleController {
         return this.rhService.updatedHandler(res, this.entityTitle);
     }
 
-
     @Patch(':id')
     @Version("1")
     async update(@Res() res, @Param('id', ValidateMongoIdPipe) id: string, @Body() updateDto: UpdateDto) {
@@ -113,8 +113,5 @@ export class RoleController {
 
         return this.rhService.updatedHandler(res, this.entityTitle);
     }
-
-
-
 
 }

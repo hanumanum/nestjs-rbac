@@ -1,17 +1,16 @@
 import { Controller, Delete, Get, Param, Patch, Put, Query, Res, Version } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {ApiBody, ApiConsumes, ApiSecurity, ApiTags, ApiBearerAuth} from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { mkdir, unlink } from 'fs';
 import { PageOptionsDto } from '../common/dtos';
 import { ResponseHandlerService } from '../utils/response.handler.utils';
 import { FilesService } from './files.service';
-import {Body, UploadedFile, UseInterceptors, UseGuards} from '@nestjs/common';
+import { Body, UploadedFile, UseInterceptors, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateFileDto } from './dto/update_file.dto';
 import { ValidateMongoIdPipe } from '../utils/mongo.utils';
-import {JwtAuthGuard, RBACGuard} from '../auth/auth.guards';
+import { JwtAuthGuard, RBACGuard } from '../rbac module/auth/auth.guards';
 
-//@ApiSecurity('x-user-meta')
 @Controller('file')
 @ApiTags('Files')
 @UseGuards(JwtAuthGuard, RBACGuard)

@@ -7,7 +7,7 @@ import { FilesController } from './files.controller';
 import { FilesService } from './files.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FileSchema, File } from './entities/files.scheme';
-import { AuthModule } from '../auth/auth.module';
+import { RBACModule } from '../rbac module/rbac.module';
 
 @Module({
 	imports: [
@@ -30,12 +30,11 @@ import { AuthModule } from '../auth/auth.module';
 				})
 			}),
 			inject: [ConfigService]
-		})
-	, AuthModule
+		}),
+		RBACModule
 	],
 	controllers: [FilesController],
 	providers: [FilesService, ResponseHandlerService]
 })
-export class FilesModule {
-	//constructor(private readonly configService: ConfigService){}
-}
+
+export class FilesModule { }

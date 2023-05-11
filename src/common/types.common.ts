@@ -7,5 +7,4 @@ export type TypeRoutePersmission = {
     method: TypeAvliableMethods;
 }
 
-
 export type TypeMongoId = Types.ObjectId; 

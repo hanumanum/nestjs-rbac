@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory }from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
 @Schema({ timestamps: true })
@@ -6,10 +6,10 @@ export class Setting extends Document {
     @Prop({ required: true, unique: true })
     setting_name: string;
 
-    @Prop({ required: true, type: mongoose.Schema.Types.Mixed})
+    @Prop({ required: true, type: mongoose.Schema.Types.Mixed })
     setting_value: any
 
-    @Prop({ required: true})
+    @Prop({ required: true })
     setting_type: string
 }
 

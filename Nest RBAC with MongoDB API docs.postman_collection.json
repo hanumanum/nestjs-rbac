@@ -1,0 +1,1766 @@
+{
+	"info": {
+		"_postman_id": "e2d9879e-3bea-4207-b767-0308ebaa7814",
+		"name": "Nest RBAC with MongoDB API docs",
+		"description": "API docs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "Auth Controller login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const response = pm.response.json()",
+											"pm.environment.set(\"bearerToken\", response.access_token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"username\": \"SuperAdmin\",\n  \"password\": \"Paww33##Word\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/v1/auth/login",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"auth",
+												"login"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Auth Controller get Profile",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/auth/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"auth",
+										"profile"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/auth/profile",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"auth",
+												"profile"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "User Controller one",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/v1/user/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"user",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "aliquip",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/v1/user/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"user",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "aliquip",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "User Controller delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/v1/user/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"user",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "aliquip",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/v1/user/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"user",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "aliquip",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "User Controller update",
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"password\": \"reprehenderit ullamco sunt pariatur do\",\n  \"name\": \"deserunt officia\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/v1/user/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"user",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "aliquip",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"password\": \"reprehenderit ullamco sunt pariatur do\",\n  \"name\": \"deserunt officia\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/v1/user/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"user",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "aliquip",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "User Controller create",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"sunt labore\",\n  \"password\": \"sit nulla eiusmod\",\n  \"name\": \"ipsum aute Ut proident laboris\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/user",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"user"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"username\": \"sunt labore\",\n  \"password\": \"sit nulla eiusmod\",\n  \"name\": \"ipsum aute Ut proident laboris\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/v1/user",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"user"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "User Controller list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/user/page?order=asc&page=1&take=10&filter=",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"page"
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "asc"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "10"
+										},
+										{
+											"key": "filter",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/v1/user/page?order=asc&page=1&take=10&filter=aliquip",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"user",
+												"page"
+											],
+											"query": [
+												{
+													"key": "order",
+													"value": "asc"
+												},
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "take",
+													"value": "10"
+												},
+												{
+													"key": "filter",
+													"value": "aliquip"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "role",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "Role Controller one",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/v1/role/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"role",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "aliquip",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/v1/role/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"role",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "aliquip",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "Role Controller delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/v1/role/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"role",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "aliquip",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/v1/role/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"role",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "aliquip",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "Role Controller update",
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"title\": \"ad\",\n  \"permissions\": [\n    \"qui Lorem\",\n    \"enim eiusmod\"\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/v1/role/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"role",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "aliquip",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"title\": \"qui ipsum laboris non\",\n  \"permissions\": [\n    \"incididunt reprehenderit sed non\",\n    \"ut\"\n  ]\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/v1/role/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"role",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "aliquip",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Role Controller create",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"file manager\",\n  \"permissions\": [{\n        \"route\": \"/v1/file\",\n        \"method\": \"put\"\n    },\n    {\n        \"route\": \"/v1/file/page\",\n        \"method\": \"get\"\n    },\n    {\n        \"route\": \"/v1/file/:id\",\n        \"method\": \"get\"\n    },\n    {\n        \"route\": \"/v1/file/:id\",\n        \"method\": \"delete\"\n    },\n    {\n        \"route\": \"/v1/file/:id\",\n        \"method\": \"patch\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/role",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"role"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"title\": \"veniam cillum elit esse\",\n  \"permissions\": [\n    \"ea sint Excepteur\",\n    \"laborum eu enim amet\"\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/v1/role",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"role"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Role Controller list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/role/page?order=asc&page=1&take=10&filter=",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"role",
+										"page"
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "asc"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "10"
+										},
+										{
+											"key": "filter",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/v1/role/page?order=asc&page=1&take=10&filter=aliquip",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"role",
+												"page"
+											],
+											"query": [
+												{
+													"key": "order",
+													"value": "asc"
+												},
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "take",
+													"value": "10"
+												},
+												{
+													"key": "filter",
+													"value": "aliquip"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Role Controller routes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/role/routes",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"role",
+										"routes"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/v1/role/routes",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"role",
+												"routes"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Role Controller assign Roles",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"user_id\": \"esse et in veni\",\n  \"role_ids\": [\n    \"non laborum\",\n    \"adipisicing velit cupidatat quis elit\"\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/role/assign",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"role",
+										"assign"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"user_id\": \"amet aliquip veniam mollit\",\n  \"role_ids\": [\n    \"incididunt amet\",\n    \"aliqua Duis quis\"\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/v1/role/assign",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"role",
+												"assign"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "file",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "Files Controller get One",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{bearerToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/v1/file/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"file",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "aliquip",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: bearer",
+														"key": "Authorization",
+														"value": "Bearer <token>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/file/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"file",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "aliquip",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "Files Controller delete One",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{bearerToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/v1/file/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"file",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "aliquip",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: bearer",
+														"key": "Authorization",
+														"value": "Bearer <token>"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/v1/file/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"file",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "aliquip",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								},
+								{
+									"name": "Files Controller update One",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{bearerToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "multipart/form-data"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file_name",
+													"value": "ipsum culpa",
+													"type": "text"
+												},
+												{
+													"key": "file",
+													"type": "file",
+													"src": []
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/v1/file/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"file",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "aliquip",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"description": "Added as a part of security scheme: bearer",
+														"key": "Authorization",
+														"value": "Bearer <token>"
+													}
+												],
+												"body": {
+													"mode": "formdata",
+													"formdata": [
+														{
+															"key": "file_name",
+															"value": "ipsum culpa",
+															"type": "text"
+														},
+														{
+															"key": "file",
+															"type": "file",
+															"src": []
+														}
+													]
+												},
+												"url": {
+													"raw": "{{baseUrl}}/v1/file/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"v1",
+														"file",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "aliquip",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Files Controller create One",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file_name",
+											"value": "ipsum culpa",
+											"type": "text"
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/file",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"file"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "file_name",
+													"value": "ipsum culpa",
+													"type": "text"
+												},
+												{
+													"key": "file",
+													"type": "file",
+													"src": []
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/v1/file",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"file"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Files Controller get List",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/file/page?order=asc&page=1&take=10&filter=",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"file",
+										"page"
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "asc"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "10"
+										},
+										{
+											"key": "filter",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/v1/file/page?order=asc&page=1&take=10&filter=aliquip",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"file",
+												"page"
+											],
+											"query": [
+												{
+													"key": "order",
+													"value": "asc"
+												},
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "take",
+													"value": "10"
+												},
+												{
+													"key": "filter",
+													"value": "aliquip"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "settings",
+					"item": [
+						{
+							"name": "Setting Controller set Setting Value",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"setting_name\": \"tempor\",\n  \"setting_value\": {}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/settings",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"settings"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"setting_name\": \"tempor\",\n  \"setting_value\": {}\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/v1/settings",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"settings"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Setting Controller list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/settings/page?order=asc&page=1&take=10&filter=",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"settings",
+										"page"
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "asc"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "10"
+										},
+										{
+											"key": "filter",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/v1/settings/page?order=asc&page=1&take=10&filter=aliquip",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"settings",
+												"page"
+											],
+											"query": [
+												{
+													"key": "order",
+													"value": "asc"
+												},
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "take",
+													"value": "10"
+												},
+												{
+													"key": "filter",
+													"value": "aliquip"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Setting Controller get Setting Value",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/v1/settings/:setting_name",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"settings",
+										":setting_name"
+									],
+									"variable": [
+										{
+											"key": "setting_name",
+											"value": "aliquip",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/v1/settings/:setting_name",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"v1",
+												"settings",
+												":setting_name"
+											],
+											"variable": [
+												{
+													"key": "setting_name",
+													"value": "aliquip",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "text/plain"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5050/",
+			"type": "string"
+		}
+	]
+}
