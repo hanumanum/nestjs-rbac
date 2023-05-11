@@ -1,15 +1,18 @@
-import { Body, Controller, Get, Param, Put, Query, Res, Version } from '@nestjs/common';
+import {Body, Controller, Get, Param, Put, Query, Res, Version, UseGuards} from '@nestjs/common';
 import { SetSettingDto } from './dto/set.setting.dto';
 import { SettingService as PrimaryService } from './settings.service';
 import { PageOptionsDto } from '../common/dtos';
 import { ResponseHandlerService } from '../utils/response.handler.utils';
-import { ApiTags } from '@nestjs/swagger';
+import {ApiTags, ApiBearerAuth} from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { ObjectTransformerLib } from '../utils/object.transformers.lib';
 import { EnumFieldsFilterMode } from '../utils/object.utils';
+import {JwtAuthGuard, RBACGuard} from '../auth/auth.guards';
 
 @Controller('settings')
 @ApiTags('Settings Management')
+@UseGuards(JwtAuthGuard, RBACGuard)
+@ApiBearerAuth('jwt')
 export class SettingController {
     private readonly entityTitle = 'setting';
     constructor(

@@ -4,15 +4,19 @@ import { UpdateUserDto as UpdateDto } from './dto/update.user.dto';
 import { UsersService as PrimaryService } from './user.service';
 import { PageOptionsDto } from '../../common/dtos';
 import { ResponseHandlerService } from '../../utils/response.handler.utils';
-import { ApiTags } from '@nestjs/swagger';
+import {ApiTags, ApiBearerAuth} from '@nestjs/swagger';
 import { ValidateMongoIdPipe } from '../../utils/mongo.utils';
 import { hashMake } from '../../utils/encryption.utils';
 import { EnumFieldsFilterMode, ObjectTransformerLib } from '../../utils/object.transformers.lib';
 import { ConfigService } from '@nestjs/config';
 import { RoleService } from '../role/role.service';
+import {JwtAuthGuard, RBACGuard} from '../../auth/auth.guards';
 
 @Controller('user')
 @ApiTags('User Management')
+@UseGuards(JwtAuthGuard, RBACGuard)
+@ApiBearerAuth('jwt')
+
 export class UserController {
     private readonly entityTitle = 'user';
     constructor(

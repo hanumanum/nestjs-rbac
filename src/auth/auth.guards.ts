@@ -15,9 +15,12 @@ const havePermission = (permissionRequest: PermissionRequest, rolesOfUser: Role[
         if (role.title === "superadmin")
             return true
 
-        console.log(permissionRequest.path)
+        console.log("permissionRequest.path", permissionRequest.path)
 
+        
         for (const permission of role.permissions) {
+            console.log(permission)
+            //console.log(permission.method , permissionRequest.method, permission.route , permissionRequest.path)
             if (permission.method === permissionRequest.method.toLowerCase() && permission.route === permissionRequest.path) {
                 return true
             }
@@ -33,8 +36,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') { }
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') { }
 
-
-//TODO: movet ot RBAC module
 @Injectable()
 export class RBACGuard extends AuthGuard('jwt') implements CanActivate {
     constructor(private readonly userService: UsersService) {

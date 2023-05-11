@@ -1,19 +1,22 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Res, Version } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Res, Version, UseGuards } from '@nestjs/common';
 import { CreateRoleDto as CreateDto } from './dto/create.role.dto';
 import { UpdateRoleDto as UpdateDto } from './dto/update.role.dto';
 import { RoleService as PrimaryService } from './role.service';
 import { PageOptionsDto } from '../../common/dtos';
 import { ResponseHandlerService } from '../../utils/response.handler.utils';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { ValidateMongoIdPipe } from '../../utils/mongo.utils';
 import { ConfigService } from '@nestjs/config';
 import { EnumFieldsFilterMode } from '../../utils/object.utils';
 import { ObjectTransformerLib } from '../../utils/object.transformers.lib';
 import { AssignRolesDto } from '../user/dto/assign.role.dto';
 import { UsersService } from '../user/user.service';
+import { JwtAuthGuard, RBACGuard } from '../../auth/auth.guards';
 
 @Controller('role')
 @ApiTags('Role Management')
+@UseGuards(JwtAuthGuard, RBACGuard)
+@ApiBearerAuth('jwt')
 export class RoleController {
     private readonly entityTitle = 'role';
     constructor(

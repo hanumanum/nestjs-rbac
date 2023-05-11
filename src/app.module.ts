@@ -32,11 +32,7 @@ import { APP_GUARD } from '@nestjs/core';
 	],
 	providers: [
 		AppService,
-		ResponseHandlerService,
-		{
-			provide: APP_GUARD,
-			useClass: RBACGuard,
-		}
+		ResponseHandlerService
 	]
 })
 

@@ -24,10 +24,9 @@ const jwtFactory = {
         PassportModule.register({ defaultStrategy: 'jwt' }),
         JwtModule.registerAsync(jwtFactory),
         RBACModule
-
     ],
     providers: [AuthService, LocalStrategy, JwtStrategy],
-    exports: [AuthService],
+    exports: [AuthService, RBACModule],
     controllers: [AuthController]
 })
 export class AuthModule { }

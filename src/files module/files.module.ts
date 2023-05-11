@@ -7,6 +7,7 @@ import { FilesController } from './files.controller';
 import { FilesService } from './files.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FileSchema, File } from './entities/files.scheme';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
 	imports: [
@@ -30,6 +31,7 @@ import { FileSchema, File } from './entities/files.scheme';
 			}),
 			inject: [ConfigService]
 		})
+	, AuthModule
 	],
 	controllers: [FilesController],
 	providers: [FilesService, ResponseHandlerService]

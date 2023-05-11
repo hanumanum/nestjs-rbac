@@ -8,11 +8,11 @@ const swaggerRoutes = new Set([
 ])
 
 
-const fliterUndefined = (route) => route.endpoint !== undefined;
-const filterSwagger = (route) => !swaggerRoutes.has(route.endpoint);
+const fliterUndefined = (route) => route.route !== undefined;
+const filterSwagger = (route) => !swaggerRoutes.has(route.route);
 const extractRoutes = (route) => {
     return {
-        endpoint: route?.route?.path,
+        route: route?.route?.path,
         method: route?.route?.stack[0]?.method
     }
 }

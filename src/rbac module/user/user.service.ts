@@ -28,11 +28,14 @@ export class UsersService implements IService {
             const document = new this.model(createDto);
 
             if (this.configService.get("IS_FIRST_RUN") === "true") {
-                const role = await this.rolesModel.create({
-                    title: "superadmin",
-                    permissions: []
-                })
-                document.roles = [role._id]
+                const count = await this.model.countDocuments().exec();
+                if(count === 0){
+                    const role = await this.rolesModel.create({
+                        title: "superadmin",
+                        permissions: ["*"]
+                    })
+                    document.roles = [role._id]
+                }
             }
 
             const userDoc = await document.save();

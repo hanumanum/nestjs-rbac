@@ -16,15 +16,6 @@ async function bootstrap() {
 	global.encKey = configService.get('ENCKEY_IV_HEX'); //TODO: review this
 
 	app.enableVersioning();
-
-	/* 
-	app.setGlobalPrefix('private', {
-		exclude: [
-			{ path: '/v1/auth/login', method: RequestMethod.POST },
-			{ path: '/v1/auth/profile', method: RequestMethod.GET },
-		]
-	}); */
-
 	app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
 	app.use(bodyParser.json({ limit: '50mb' }));
@@ -42,7 +33,7 @@ async function bootstrap() {
 			.setDescription('API docs')
 			.setVersion('1.0')
 			//.addServer(`http://localhost:${port}/private`, 'Private Calls')
-			.addServer(`http://localhost:${port}/`, 'Public Calls')
+			.addServer(`http://localhost:${port}/`)
 			.addBearerAuth(
 				{
 					type: 'http',
