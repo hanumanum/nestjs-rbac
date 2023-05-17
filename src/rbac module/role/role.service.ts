@@ -34,7 +34,7 @@ export class RoleService implements IService {
     async list(pageOptionsDto: PageOptionsDto, findFields: searchKeys[] = []): TypeErrorOrPageDtoTuple<MongoDocument> {
         try {
             const [error, data] = await listMongoCollectionWithPagination(this.model, pageOptionsDto, findFields);
-            
+
             if (error)
                 return [error, null]
 
@@ -54,6 +54,16 @@ export class RoleService implements IService {
         catch (err) {
             errorLogger(err)
             return [err, null]
+        }
+    }
+
+    async oneByTitle(title: string): TupleErrorOrData<MongoDocument> {
+        try {
+            const document = await this.model.findOne({ title: title }).exec();
+            return [null, document]
+        } catch (error) {
+            errorLogger(error)
+            return [error, null]
         }
     }
 

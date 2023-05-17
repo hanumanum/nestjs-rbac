@@ -59,7 +59,6 @@ export class UserController {
     @Put()
     @Version("1")
     async create(@Res() res, @Body() createDto: CreateDto) {
-        createDto.password = await hashMake(createDto.password);
 
         const [error] = await this.service.create(createDto);
         if (error)
@@ -82,9 +81,9 @@ export class UserController {
     @Patch(':id')
     @Version("1")
     async update(@Res() res, @Param('id', ValidateMongoIdPipe) id: string, @Body() updateDto: UpdateDto) {
-        if (updateDto.password)
+        /* if (updateDto.password)
             updateDto.password = await hashMake(updateDto.password);
-
+        */
         const [error] = await this.service.update(id, updateDto);
 
         if (error)

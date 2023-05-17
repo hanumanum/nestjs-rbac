@@ -8,10 +8,11 @@ import { IService, TupleErrorOrData } from '../../common/interfaces/service.inte
 import { PageOptionsDto, TypeErrorOrPageDtoTuple } from '../../common/dtos';
 import { errorLogger } from '../../utils/logger.utils';
 import { listMongoCollectionWithPagination } from '../../utils/mongo.utils';
-import { hashCompare } from '../../utils/encryption.utils';
+import { hashCompare, hashMake } from '../../utils/encryption.utils';
 import { CheckUserDto } from './dto/check.user.dto';
 import { Role as RoleEntity } from '../role/entities/role.scheme';
 import { ConfigService } from '@nestjs/config';
+import { defaultRoleTitle } from '../common/default.role';
 
 type searchKeys = keyof typeof Entity.prototype;
 
@@ -25,16 +26,25 @@ export class UsersService implements IService {
 
     async create(createDto: CreateDto): TupleErrorOrData<MongoDocument> {
         try {
+            createDto.password = await hashMake(createDto.password);
+            
             const document = new this.model(createDto);
 
             if (this.configService.get("IS_FIRST_RUN") === "true") {
                 const count = await this.model.countDocuments().exec();
-                if(count === 0){
-                    const role = await this.rolesModel.create({
+                if (count === 0) {
+                    const roleSuperadmin = await this.rolesModel.create({
                         title: "superadmin",
+                        isEmailVerifyed: true,
                         permissions: ["*"]
                     })
-                    document.roles = [role._id]
+                    document.roles = [roleSuperadmin._id]
+
+                    await this.rolesModel.create({
+                        title: defaultRoleTitle,
+                        permissions: []
+                    })
+
                 }
             }
 
@@ -73,6 +83,17 @@ export class UsersService implements IService {
         }
     }
 
+    async oneByEmail(email: string): TupleErrorOrData<MongoDocument> {
+        try {
+            const user = await this.model.findOne({ email: email }).exec();
+            return [null, user]
+        }
+        catch (err) {
+            errorLogger(err)
+            return [err, null]
+        }
+    }
+
     async one(id: string): TupleErrorOrData<MongoDocument> {
         try {
             const document = await this.model.findById(id).populate("roles").exec();
@@ -84,23 +105,19 @@ export class UsersService implements IService {
         }
     }
 
-    //TODO: probably not needed
-    /* 
-    async checkPassowrd(checkPassowrd: CheckUserDto): TupleErrorOrData<boolean> {
+
+    async oneByUUID(uuid: string): TupleErrorOrData<MongoDocument> {
         try {
-            const document = await this.model.findOne({ username: checkPassowrd.username }).exec();
-            if (!document)
-                return [null, false]
+            const user = await this.model.findOne({ emailVerificationUUID: uuid }).exec();
+            if (!user)
+                return [null, null]
 
-            const isSame = await hashCompare(checkPassowrd.password, document.password)
-            return [null, isSame]
-        }
-        catch (error) {
+            return [null, user]
+        } catch (error) {
             errorLogger(error)
-            return [error, false]
+            return [error, null]
         }
-
-    } */
+    }
 
     async checkUserPassword(checkPassowrd: CheckUserDto): TupleErrorOrData<UserDocument> {
         try {
@@ -137,6 +154,10 @@ export class UsersService implements IService {
 
     async update(id: string, updateDto: UpdateDto): TupleErrorOrData<MongoDocument> {
         try {
+            if(updateDto.password){
+                updateDto.password = await hashMake(updateDto.password);
+            }
+
             const document = await this.model.findById(id).exec();
             await document.updateOne(updateDto);
             return [null, document]

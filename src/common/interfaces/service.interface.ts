@@ -3,7 +3,7 @@ import { TypeErrorOrPageDtoTuple } from '../dtos/page.dto';
 
 export type TupleErrorOrData<T> = Promise<[Error | null, T, string?]>;
 
-//TODO: make getters configurabel, only nessessary field must be returned
+//TODO: make getters configurable, only nessessary field must be populated from db
 export interface IService {
 	list(PageOptionsDto: PageOptionsDto): TypeErrorOrPageDtoTuple<any>;
 	create(createDto: any): TupleErrorOrData<any>;

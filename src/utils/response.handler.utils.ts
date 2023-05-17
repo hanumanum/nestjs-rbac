@@ -24,6 +24,14 @@ export class ResponseHandlerService {
 		});
 	}
 
+	registrationHandler = (res, text: string) => {
+		return res.status(HttpStatus.CREATED).send({
+			statusCode: HttpStatus.CREATED,
+			message: `${text}`
+		}
+		);
+	};
+
 	createdHandler = (res, entityTitle: string) => {
 		return res.status(HttpStatus.CREATED).send({
 			statusCode: HttpStatus.CREATED,
@@ -38,6 +46,13 @@ export class ResponseHandlerService {
 			message: `${entityTitle} updated`
 		});
 	};
+
+	generalSuccessHandler = (res, message: string) => {
+		return res.status(HttpStatus.OK).send({
+			statusCode: HttpStatus.OK,
+			message: message
+		})
+	}
 
 
 	deletedHandler = (res, entityTitle: string) => {

@@ -45,7 +45,7 @@ export class RBACGuard extends AuthGuard('jwt') implements CanActivate {
         if (error || !userFromDb)
             return false
 
-        const perimt = havePermission({ method, path }, userFromDb.roles)
-        return perimt;
+        const permit = havePermission({ method, path }, userFromDb.roles)
+        return permit;
     }
 }
