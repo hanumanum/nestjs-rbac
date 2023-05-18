@@ -24,7 +24,7 @@ npm run start:dev
 ### Configuration
 If IS_FIRST_RUN is set to true, the app will create following 
 1. First registered user will become an admin user with full privileges.
-2. Finimal privileged user role
+2. Minimal privileged user role
 
 ### Swagger
 http://localhost:5050/#docs
