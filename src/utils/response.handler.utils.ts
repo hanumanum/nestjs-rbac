@@ -64,7 +64,7 @@ export class ResponseHandlerService {
 
 	notFoundHandler = (res, entityTitle: string) => {
 		return res.status(HttpStatus.NOT_FOUND).send({
-			code: HttpStatus.NOT_FOUND,
+			statusCode: HttpStatus.NOT_FOUND,
 			message: `${entityTitle} not found`
 		});
 	};
@@ -77,4 +77,10 @@ export class ResponseHandlerService {
 		});
 	};
 
+	schemeHandler = (res, scheme: any) => {
+		return res.status(HttpStatus.OK).send({
+			statusCode: HttpStatus.OK,
+			scheme
+		})
+	}
 }
