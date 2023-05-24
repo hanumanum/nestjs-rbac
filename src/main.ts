@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -7,6 +7,7 @@ import { AppModule } from './app.module';
 import * as bodyParser from 'body-parser';
 import { getRouteList } from './rbac module/rbac.utils';
 import { arrayLogger } from './utils/logger.utils';
+import { ValidationError } from 'class-validator';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -14,7 +15,21 @@ async function bootstrap() {
 	const port = configService.get('PORT');
 
 	app.enableVersioning();
-	app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+	app.useGlobalPipes(new ValidationPipe({
+		exceptionFactory: (validationErrors: ValidationError[] = []) => {
+			return new BadRequestException(
+				validationErrors.map((error) => {
+					return {
+						field: error.property,
+						error: Object.values(error.constraints)
+					}
+				}),
+			);
+		},
+		whitelist: true,
+		transform: true,
+		//stopAtFirstError: true //TODO: is this a good idea?
+	}));
 
 	app.use(bodyParser.json({ limit: '50mb' }));
 	app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));

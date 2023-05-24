@@ -50,7 +50,6 @@ export class AuthController {
     }
 
 
-
     @Post('register')
     //@UseGuards(LocalAuthGuard)
     @Version("1")
@@ -80,7 +79,7 @@ export class AuthController {
             return this.rh.errorHandler(res, new Error("Error while registering user"));
         }
 
-        const [errorEmail, isSent] = await sendEmail(newUser.email, "Email verification", "Please click on the link to verify your email", []);
+        const [errorEmail] = await sendEmail(newUser.email, "Email verification", "Please click on the link to verify your email", []);
         if (errorEmail) {
             errorLogger(errorEmail);
             return this.rh.errorHandler(res, new Error("Error while sending email"));
